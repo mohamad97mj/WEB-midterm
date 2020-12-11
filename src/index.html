@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="full-size no-margin">
+<head>
+    <meta charset="UTF-8">
+    <title>starship app</title>
+    <link rel="stylesheet" href="../src/css/general.css">
+    <link rel="stylesheet" href="../src/css/style.css">
+
+</head>
+<body class="full-size no-margin">
+
+<div id="hero" class="display-flex flex-justify-content-center flex-center-content overflow-hidden full-size">
+    <div id="menu-box" class="display-flex flex-col white-background">
+        <div id="menu-header" class="text-center full-width">
+            Welcome to Starships application!
+        </div>
+        <div id="menu-content" class="full-width display-flex flex-row">
+            <table id="starships-table">
+                <tr>
+                    <th>List of Starships</th>
+                </tr>
+            </table>
+            <div id="starship-detail" class="full-height normal-border">
+                <h5 class="text-center margin-top-10 margin-bottom-5">Starship Details</h5>
+                <h6 class="text-center no-margin">(Choose a starship)</h6>
+
+
+            </div>
+        </div>
+        <div id="menu-footer-container" class="full-width">
+            <div id="menu-footer" class="display-flex flex-center-content">
+                <div id="paging-container" class="display-flex flex-space-between">
+                    <button id="prev-btn" class="paging-icon white-color no-border text-center clickable"
+                            onclick="go2PrevPage()">
+                        <
+                    </button>
+                    <button class="paging-icon white-color no-border text-center">
+                        <span id="current-page">
+
+                        </span>
+                    </button>
+                    <button id="next-btn" class="paging-icon white-color no-border text-center clickable"
+                            onclick="go2NextPage()">
+                        >
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    // this function set a query param
+    const setQueryParam = (key, value) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set(key, value);
+        window.location.search = urlParams;
+    }
+
+    // this function fetch data from a url
+    const myfetch = async (url) => {
+        try {
+            let response = await fetch(url);
+            return await response.json();
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // this function fetches all the starships from the utl until next value is not null
+    const fetchAllStarships = async (baseUrl) => {
+        let fetchedStarships = [];
+        let nextDataPartUrl = baseUrl;
+        do {
+            let fetchedDataPart = await myfetch(nextDataPartUrl);
+            fetchedStarships = fetchedStarships.concat(fetchedDataPart.results);
+            nextDataPartUrl = fetchedDataPart.next;
+
+        } while (nextDataPartUrl);
+        return fetchedStarships;
+    }
+
+    // this function goes application to the next page
+    const go2NextPage = () => {
+        if (page < maxPageNumber) {
+            setQueryParam("page", parseInt(page) + 1);
+        }
+    };
+
+    // this function goes application to the previous page
+    const go2PrevPage = () => {
+        if (parseInt(page) > 1) {
+            setQueryParam("page", parseInt(page) - 1);
+        }
+    };
+
+    // this function find number of required page based on total number of items an number of items per page
+    const findNumberOfRequiredPages = (numberOfItems, itemPerPages) => {
+        return Math.ceil(numberOfItems / itemPerPages);
+    }
+
+    // this function get the part of an array based on number of part and number of items
+    const extractPartOfArray = (array, partNumber, numberOfItems) => {
+        return array.slice((parseInt(partNumber) - 1) * numberOfItems, parseInt(partNumber) * numberOfItems);
+    }
+
+    // this function insert html before the closing tag of given target
+    const addElementBeforeEnd = (targetId, html2insert) => {
+        let parent = document.getElementById(targetId);
+        parent.insertAdjacentHTML('beforeend', html2insert);
+    }
+
+    // this function replace inner html of a target with a given argument
+    const replaceInnerHtml = (targetId, html2replace) => {
+        let target = document.getElementById(targetId);
+        target.innerHTML = html2replace;
+    }
+
+    // this functions return a html based on key and value of a json given
+    const createKeyValueRow = (key, value) => {
+        const returnHtml = '<div style="height: 21px" class="full-width display-flex flex-row">\n' +
+            '                    <div class="one-third-width text-left padding-left-20">' + key + '</div>\n' +
+            '                    <div class="two-third-width text-right padding-right-20"><span>' + value + '</span></div>\n' +
+            '                </div>';
+
+        return returnHtml;
+    }
+
+
+    // this functions show details for clicked starship
+    const showStarshipDetails = async (index) => {
+        const simpleFields = ['name', 'model', 'manufacturer', 'cost_in_credits', 'length', 'max_atmosphering_speed', 'crew', 'passengers', 'cargo_capacity', 'consumables', 'hyperdrive_rating', 'MGLT', 'starship_class', 'created', 'edited', 'url']
+        let html2replace = '';
+        let targetStarship = partOfStarships[index];
+        let i;
+        for (i = 0; i < simpleFields.length; i++) {
+            html2replace += createKeyValueRow(simpleFields[i] + ":", targetStarship[simpleFields[i]]);
+        }
+        let pilotsNames = '';
+        let j;
+        for (j = 0; j < targetStarship.pilots.length; j++) {
+            let pilot = await myfetch(targetStarship.pilots[j]);
+            if (j == 0) {
+                pilotsNames += pilot.name;
+            } else {
+                pilotsNames += ', ' + pilot.name;
+            }
+        }
+        html2replace += createKeyValueRow("pilots:", pilotsNames);
+
+        let filmsTitles = '';
+        let k;
+        for (k = 0; k < targetStarship.films.length; k++) {
+            let film = await myfetch(targetStarship.films[k]);
+            if (k == 0) {
+                filmsTitles += film.title;
+            } else {
+                filmsTitles += ', ' + film.title;
+            }
+        }
+        html2replace += createKeyValueRow("films:", filmsTitles);
+
+        replaceInnerHtml('starship-detail', html2replace);
+    }
+
+</script>
+<script>
+    // this block of code set the current page if not exists as a query param
+    let page;
+    let maxPageNumber;
+    let partOfStarships;
+
+    (async () => {
+
+        // this block of code initialize the page number in the url
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('page')) {
+            page = urlParams.get('page')
+        } else {
+            page = 1;
+            setQueryParam('page', page);
+        }
+
+        // this block of code fetch all starships and stores it in a var
+        let baseUrl = "https://swapi.dev/api/starships/";
+        let starships = await fetchAllStarships(baseUrl);
+        let numberOfItemsPerPage = 10;
+        maxPageNumber = findNumberOfRequiredPages(starships.length, numberOfItemsPerPage);
+
+        // this block of code set the current page in paging icon based on the url page query param
+        document.getElementById("current-page").innerText = page;
+        if (page == 1) {
+            document.getElementById("prev-btn").disabled = true;
+        }
+        if (page == maxPageNumber) {
+            document.getElementById("next-btn").disabled = true;
+        }
+
+
+        // this block of code extract 10 item from array based on page number and number of items per page and add it to table
+        partOfStarships = extractPartOfArray(starships, page, numberOfItemsPerPage);
+        console.log(partOfStarships);
+        let i;
+        let html2append = '';
+        for (i = 0; i < partOfStarships.length; i++) {
+            html2append += '<tr class="clickable" onclick="showStarshipDetails(' + i + ')"><td>' + partOfStarships[i].name + '</td></tr>';
+        }
+        addElementBeforeEnd("starships-table", html2append);
+
+    })();
+</script>
+</body>
+
+</html>

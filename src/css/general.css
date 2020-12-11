@@ -1,47 +1,25 @@
+/*
+    set padding for frequent values
+*/
 
-.container-lr-5-per-padding {
-    padding-left: 5%;
-    padding-right: 5%;
-}
-
-
-.no-lr-padding {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-
-.padding-top-10 {
-    padding-top: 10px;
-}
 
 .padding-right-20 {
     padding-right: 20px;
 }
 
-
 .padding-left-20 {
-    padding-right: 20px;
+    padding-left: 20px;
 }
 
-.padding-top-20 {
-    padding-top: 20px;
-}
 
-.padding-top-30 {
-    padding-top: 30px;
-}
-
-.padding-bottom-30 {
-    padding-bottom: 30px;
-}
-
-.half-width {
-    width: 50%;
-}
+/* set width and height for frequent values */
 
 .one-third-width {
     width: 33%;
+}
+
+.two-third-width {
+    width: 66%;
 }
 
 .full-width {
@@ -58,26 +36,18 @@
 }
 
 
-.horizontal-center {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.vertical-center {
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
+/*
+    set horizontally and vertically alignment for both text and other content in flex display
+*/
 .center {
     margin: auto;
 }
 
-.center-content {
-    display: flex;
+.flex-center-content {
     align-items: center;
 }
 
-.justify-content-center {
+.flex-justify-content-center {
     justify-content: center;
 }
 
@@ -89,11 +59,16 @@
     text-align: right;
 }
 
-.no-decoration {
-    text-decoration: none;
+.text-left {
+    text-align: left;
 }
 
-.flex-container {
+
+/*
+    flex display settings
+*/
+
+.display-flex {
     display: flex;
 }
 
@@ -101,162 +76,79 @@
     justify-content: space-between;
 }
 
-.row-flex {
+.flex-row {
     flex-direction: row;
 }
 
-.col-flex {
+.flex-col {
     flex-direction: column;
 }
 
-.row-reverse-flex {
-    flex-direction: row-reverse;
-}
+
+
+/*
+    setting frequent border rounded values
+*/
 
 .no-border {
     border: none;
 }
 
-.rounded-border-5 {
-    border-radius: 5px;
-}
-
-.rounded-border-10 {
-    border-radius: 10px;
-}
-
-.rounded-border-15 {
-    border-radius: 15px;
-}
-
-.rounded-border-20 {
-    border-radius: 20px;
-}
-
-.circle-imag {
-    border-radius: 50%;
-}
-
-.left-rounded-border-15 {
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-}
 
 
-.right-rounded-border-15 {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-}
-
-.purple-background {
-    background-color: rgb(232, 201, 253);
-}
-
-.red-background {
-    background-color: rgb(252, 186, 186);
-}
-
-.green-background {
-    background-color: rgb(179, 232, 202);
-}
-
-.blue-background {
-    background-color: rgb(171, 194, 216);
-}
-
-.pink-background {
-    background-color: rgb(251, 203, 238);
-}
-
-.cyan-background {
-    background-color: rgb(197, 225, 251);
-}
-
-.orange-background {
-    background-color: rgb(253, 205, 176);
-}
-
-.light-background {
-    background-color: #f7f7f7;
-}
+/*
+    set frequent background colors
+*/
 
 .white-background {
     background-color: white;
 }
 
-.light-blue-background {
-    background-color: #e5f2fe;
-}
-
+/*
+    set frequent colors
+*/
 
 .white-color {
     color: white;
 }
 
-.blue-color {
-    color: #1780df;
-}
 
-.img-container {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-}
 
+/*
+change cursor for clickable items
+*/
 .clickable:hover {
     cursor: pointer;
 }
 
-.my-btn-block {
-    width: 100%;
+
+/*
+    hide overflow
+*/
+.overflow-hidden {
+    overflow: hidden;
 }
 
-.rtl-direction {
-    direction: rtl;
-}
-
-.ltr-direction {
-    direction: ltr;
-}
-
-.overflow-auto {
-    overflow: auto;
-}
-
-.vertical-line {
-    border-left: 2px solid white;
-    height: 150px;
-}
-
-
-.vertical-line-small {
-    border-left: 2px solid #dee2e6;
-    height: 50px;
-}
-
-
+/*
+set a frequently used border
+*/
 .normal-border {
     border: 1px solid #ced4da
 }
 
-.normal-bottom-border {
-    border-bottom: 1px solid #ced4da
+/*
+set margin to frequently used values
+*/
+.no-margin {
+    margin: 0;
 }
 
-.rotate-180-degree {
-    transform: rotate(180deg);
+.margin-top-10 {
+    margin-top: 10px;
 }
 
-
-.rotate-90-degree {
-    transform: rotate(90deg);
+.margin-bottom-5 {
+    margin-bottom: 5px;
 }
 
-.char-square-box {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-}
-
-.dotted-underline {
-    border-bottom: 1px dotted;
-}
 
