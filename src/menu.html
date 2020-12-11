@@ -3,13 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>menu</title>
+    <link rel="stylesheet" href="../src/css/general.css">
+    <link rel="stylesheet" href="../src/css/style.css">
 </head>
 <body>
 
+<div id="hero">
+    <div id="menu-box" class="flex-container col-flex">
+        <div id="menu-header" class="">
+
+        </div>
+        <div id="menu-content" class="">
+
+        </div>
+        <div id="menu-footer-container" class="">
+            <div id="menu-footer" class="">
+                <div class="paging-container">
+                    <a class="paging-icon" onclick="go2PrevPage()">
+                        prev
+                    </a>
+                    <a class="paging-icon">
+                        <span id="current-page">
+
+                        </span>
+                    </a>
+                    <a class="paging-icon" onclick="go2NextPage()">
+                        next
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
-
 <script>
+    const setQueryParam = (key, value) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set(key, value);
+        window.location.search = urlParams;
+    }
+    const deleteQueryParam = (key) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete(key);
+        window.location.search = urlParams;
+    }
+
     const myfetch = async (url) => {
         try {
             let response = await fetch(url);
@@ -18,8 +57,7 @@
             console.log(e);
         }
     };
-</script>
-<script>
+
     const fetchAllStarships = async (baseUrl) => {
         let fetchedStarships = [];
         let nextDataPartUrl = baseUrl;
@@ -31,14 +69,42 @@
         } while (nextDataPartUrl);
         return fetchedStarships;
     }
+
+    const go2NextPage = () => {
+        alert("going to next page ...");
+        setQueryParam("page", parseInt(page) + 1);
+    };
+
+    const go2PrevPage = () => {
+        alert("going to prev page ...");
+        setQueryParam("page", parseInt(page) - 1);
+    };
 </script>
 <script>
+
+    // this block of code set the current page if not exists as a query param
+    let page;
+    (() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('page')) {
+            page = urlParams.get('page')
+        } else {
+            page = 1
+            setQueryParam('page', page);
+        }
+    })();
+
+        // this block of code set the current page in paging icon based on the url page query param
+    (() => {
+        document.getElementById("current-page").innerText = page;
+    })();
+
+        // this block of code fetch all starships and stores it in a var
     (async () => {
         let baseUrl = "https://swapi.dev/api/starships/"
         let starships = await fetchAllStarships(baseUrl)
         console.log(starships);
-    })()
+    })();
+
 </script>
-
-
 </html>
