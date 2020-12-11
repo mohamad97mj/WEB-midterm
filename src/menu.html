@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+</head>
+<body>
+
+</body>
+
+
+<script>
+    const myfetch = async (url) => {
+        try {
+            let response = await fetch(url);
+            return await response.json();
+        } catch (e) {
+            console.log(e);
+        }
+    };
+</script>
+<script>
+    const fetchAllStarships = async (baseUrl) => {
+        let fetchedStarships = [];
+        let nextDataPartUrl = baseUrl;
+        do {
+            let fetchedDataPart = await myfetch(nextDataPartUrl);
+            fetchedStarships = fetchedStarships.concat(fetchedDataPart.results);
+            nextDataPartUrl = fetchedDataPart.next;
+
+        } while (nextDataPartUrl);
+        return fetchedStarships;
+    }
+</script>
+<script>
+    (async () => {
+        let baseUrl = "https://swapi.dev/api/starships/"
+        let starships = await fetchAllStarships(baseUrl)
+        console.log(starships);
+    })()
+</script>
+
+
+</html>
